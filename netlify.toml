@@ -1,0 +1,15 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Environment variables - also set these in the Netlify dashboard under Site Settings > Environment Variables
+[context.production.environment]
+  VITE_SUPABASE_URL = "https://zuwuqezzhbpedgnmyjzm.supabase.co"
+  VITE_SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1d3VxZXp6aGJwZWRnbm15anptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2Mzc2MjQsImV4cCI6MjA5ODIxMzYyNH0.REUOWITKqKx4aWZj56tpyz_4C1ONi_Cj4XxvqdnW_cs"
+  VITE_SUPABASE_PROJECT_ID = "zuwuqezzhbpedgnmyjzm"
+  SUPABASE_URL = "https://zuwuqezzhbpedgnmyjzm.supabase.co"
+  SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1d3VxZXp6aGJwZWRnbm15anptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2Mzc2MjQsImV4cCI6MjA5ODIxMzYyNH0.REUOWITKqKx4aWZj56tpyz_4C1ONi_Cj4XxvqdnW_cs"
+  SUPABASE_PROJECT_ID = "zuwuqezzhbpedgnmyjzm"
