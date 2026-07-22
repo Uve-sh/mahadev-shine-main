@@ -15,6 +15,7 @@ import "@fontsource/manrope/600.css";
 import "@fontsource/manrope/700.css";
 
 import heroImage from "@/assets/hero-aluminium.jpg";
+import qrCode from "@/assets/qr-code.png";
 import { supabase } from "@/integrations/supabase/client";
 import {
   fetchSiteSettings, fetchServices, fetchGalleryCategories, fetchGalleryItems,
@@ -29,6 +30,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -67,9 +69,16 @@ function SectionHeading({ eyebrow, title, subtitle }: { eyebrow?: string; title:
   );
 }
 
+// Hardcoded fallback phone numbers (shown when Supabase settings are not configured)
+const FALLBACK_PHONE_PRIMARY = "7405402423";
+const FALLBACK_PHONE_SECONDARY = "8487828136";
+
 function Hero({ settings }: { settings: SiteSettings | null }) {
-  const phone = settings?.phone_primary;
-  const wa = (settings?.whatsapp_number || phone || "").replace(/[^\d+]/g, "").replace(/^\+/, "");
+  const phone = settings?.phone_primary || FALLBACK_PHONE_PRIMARY;
+  const phoneClean = phone.replace(/[^\d]/g, "");
+  const wa = settings?.whatsapp_number 
+    ? (settings.whatsapp_number.replace(/[^\d]/g, "").length === 10 ? `91${settings.whatsapp_number.replace(/[^\d]/g, "")}` : settings.whatsapp_number.replace(/[^\d]/g, ""))
+    : (phoneClean.length === 10 ? `91${phoneClean}` : phoneClean);
   return (
     <section id="home" className="relative min-h-[100svh] flex items-center overflow-hidden pt-24 lg:pt-28">
       <div className="absolute inset-0 -z-10">
@@ -91,7 +100,7 @@ function Hero({ settings }: { settings: SiteSettings | null }) {
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             {phone ? (
-              <a href={`tel:${phone}`} className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-[var(--burgundy)] shadow-luxe hover:bg-white/90">
+              <a href={`tel:${phoneClean}`} className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-[var(--burgundy)] shadow-luxe hover:bg-white/90">
                 <Phone className="h-4 w-4" />Call Now
               </a>
             ) : null}
@@ -119,11 +128,7 @@ function Hero({ settings }: { settings: SiteSettings | null }) {
                 <div className="font-display text-2xl text-[var(--burgundy)]">{settings?.business_name ?? "Mahadev"}</div>
                 <div className="text-[11px] uppercase tracking-[0.3em] text-[var(--gold-foreground)] mt-1">Aluminium Section & Door</div>
               </div>
-              {settings?.hero_qr_image_url ? (
-                <img src={settings.hero_qr_image_url} alt="QR" className="h-24 w-24 rounded-lg border border-[var(--gold)]/40 p-1 bg-white" loading="lazy" />
-              ) : (
-                <div className="h-24 w-24 rounded-lg border border-dashed border-[var(--gold)]/50 flex items-center justify-center text-[10px] text-muted-foreground">QR</div>
-              )}
+              <img src={qrCode} alt="Scan to Connect - Mahadev Aluminium" className="h-24 w-24 rounded-lg border border-[var(--gold)]/40 p-1 bg-white" loading="eager" />
               <div className="text-[10px] uppercase tracking-[0.3em] text-[var(--burgundy)]/70">Scan to Connect</div>
             </motion.div>
             <div className="absolute -inset-6 -z-10 rounded-[40px] bg-[var(--gold)]/20 blur-3xl" />
@@ -216,42 +221,159 @@ function ServicesGrid({ services }: { services: Service[] }) {
   );
 }
 
+// Static gallery data using local product images
+const STATIC_GALLERY_CATS = [
+  { id: "door", name: "એલ્યુમિનિયમ દરવાજા", slug: "door" },
+  { id: "sliding", name: "ડુમલ સ્લાઇડિંગ વિન્ડો", slug: "sliding" },
+  { id: "glass", name: "ગ્લાસ એલિવેશન", slug: "glass" },
+  { id: "partition", name: "પાર્ટિશનો", slug: "partition" },
+  { id: "zgrill", name: "Z-ગ્રીલ વિન્ડો", slug: "zgrill" },
+  { id: "sunmica", name: "ડોર કેટેલોગ", slug: "sunmica" },
+];
+
+const STATIC_GALLERY_ITEMS = [
+  // Door
+  { id: "d1", category_id: "door", image_url: "/gallery/door-2x1.jpg",  title: "એલ્યુમિનિયમનો દરવાજો - ૨×૧",  caption: "શ્રેષ્ઠ 2-સેક્શન એલ્યુમિનિયમ દરવાજો. ઘર અને ઓફિસ માટે ઉત્તમ." },
+  { id: "d2", category_id: "door", image_url: "/gallery/door-3x1.jpg",  title: "એલ્યુમિનિયમનો દરવાજો - ૩×૧",  caption: "મજબૂત 3-ટ્રેક એલ્યુમિનિયમ દરવાજો, પહોળા ઓપનિંગ માટે." },
+  // Dumal Sliding
+  { id: "s1", category_id: "sliding", image_url: "/gallery/sliding-60mm.jpg",   title: "60mm ડુમલ સ્લાઇડિંગ વિન્ડો",         caption: "પ્રીમિયમ 60mm ડુમલ સેક્શન સ્લાઇડિંગ વિન્ડો, પાવડર-કોટેડ ફિનિશ સાથે." },
+  { id: "s2", category_id: "sliding", image_url: "/gallery/sliding-60mm-2.jpg", title: "60mm સ્લાઇડિંગ વિન્ડો - વ્યૂ 2",        caption: "સ્મૂથ ગ્લાઇડિંગ 60mm એલ્યુમિનિયમ સ્લાઇડિંગ વિન્ડો, બાલ્કની અને લિવિંગ રૂમ માટે યોગ્ય." },
+  { id: "s3", category_id: "sliding", image_url: "/gallery/sliding-60mm-3.jpg", title: "60mm સ્લાઇડિંગ વિન્ડો - વ્યૂ 3",        caption: "મજબૂત કાચ અને એલ્યુમિનિયમ ટ્રેક સાથે ઉચ્ચ-ગુણવત્તાવાળી 60mm સેક્શન વિન્ડો." },
+  { id: "s4", category_id: "sliding", image_url: "/gallery/sliding-1.jpg",       title: "ડુમલ સ્લાઇડિંગ વિન્ડો ઇન્સ્ટોલેશન", caption: "અમારી નિષ્ણાત ટીમ દ્વારા ડુમલ સ્લાઇડિંગ વિન્ડોનું સ્થળ પર સ્થાપન." },
+  { id: "s5", category_id: "sliding", image_url: "/gallery/sliding-2.jpg",       title: "ડુમલ વિન્ડો - સાઇટ વ્યૂ",         caption: "ઉત્તમ વેન્ટિલેશન અને કુદરતી પ્રકાશ પ્રદાન કરતી ડુમલ સ્લાઇડિંગ વિન્ડો સ્થાપિત." },
+  { id: "s6", category_id: "sliding", image_url: "/gallery/sliding-3.jpg",       title: "ડુમલ સ્લાઇડિંગ વિન્ડો વિગતવાર",      caption: "ચોકસાઈથી બનાવેલા એલ્યુમિનિયમ ટ્રેક અને હેન્ડલની ક્લોઝ-અપ." },
+  // Glass Elevation
+  { id: "g1", category_id: "glass", image_url: "/gallery/glass-elevation-1.jpg", title: "ગ્લાસ એલિવેશન - પૂર્ણ દૃશ્ય",   caption: "આધુનિક દેખાવ માટે સ્ટ્રક્ચરલ એલ્યુમિનિયમ ફ્રેમિંગ સાથે પૂર્ણ-ઊંચાઈવાળા કાચની ઊંચાઈ." },
+  { id: "g2", category_id: "glass", image_url: "/gallery/glass-elevation-2.jpg", title: "કાચની ઊંચાઈ - બાજુનો દૃશ્ય",   caption: "સીમલેસ ગ્લાસ એલિવેશન વર્ક એક આકર્ષક, સમકાલીન દેખાવ પૂરો પાડે છે." },
+  { id: "g3", category_id: "glass", image_url: "/gallery/glass-elevation-3.jpg", title: "કાચની ઊંચાઈ - વિગત",      caption: "મહત્તમ ટકાઉપણું માટે એલ્યુમિનિયમ સેક્શન સાથે મજબૂત કાચની પેનલો." },
+  // Partition
+  { id: "p1", category_id: "partition", image_url: "/gallery/partition-1.jpg", title: "ઓફિસ ગ્લાસ પાર્ટિશન",         caption: "આધુનિક ઓફિસો અને વાણિજ્યક જગ્યાઓ માટે ભવ્ય એલ્યુમિનિયમ-ફ્રેમવાળા કાચના પાર્ટિશન." },
+  { id: "p2", category_id: "partition", image_url: "/gallery/partition-2.jpg", title: "પાર્ટિશન - ફ્રોસ્ટેડ ગ્લાસ",      caption: "હિમાચ્છાદિત કાચના પાર્ટિશનો ખુલ્લા વાતાવરણને જાળવી રાખીને ગોપનીયતા પ્રદાન કરે છે." },
+  { id: "p3", category_id: "partition", image_url: "/gallery/partition-3.jpg", title: "પૂર્ણ-ઊંચાઈ કાચનું પાર્ટિશન",    caption: "સ્વચ્છ, વ્યાવસાયિક પૂર્ણાહુતિ સાથે ફ્લોર-ટુ-સીલિંગ એલ્યુમિનિયમ ગ્લાસ પાર્ટિશન." },
+  // Z-Grill
+  { id: "z1", category_id: "zgrill", image_url: "/gallery/zgrill-1.jpg", title: "Z-ગ્રીલ વિન્ડો - સ્ટાઇલ ૧",  caption: "સુરક્ષા અને વેન્ટિલેશન પૂરી પાડતી ક્લાસિક Z-ગ્રીલ એલ્યુમિનિયમ વિન્ડો." },
+  { id: "z2", category_id: "zgrill", image_url: "/gallery/zgrill-2.jpg", title: "Z-ગ્રીલ વિન્ડો - સ્ટાઇલ ૨",  caption: "કાટ-પ્રૂફ એલ્યુમિનિયમ વિભાગો સાથે પાવડર-કોટેડ Z-ગ્રીલ વિન્ડો." },
+  { id: "z3", category_id: "zgrill", image_url: "/gallery/zgrill-3.jpg", title: "Z-ગ્રીલ વિન્ડો - સ્ટાઇલ ૩",  caption: "શ્રેષ્ઠ ફિનિશ સાથે રહેણાંક બારીઓ માટે આધુનિક Z-ગ્રીલ ડિઝાઇન." },
+  { id: "z4", category_id: "zgrill", image_url: "/gallery/zgrill-4.jpg", title: "Z-ગ્રીલ વિન્ડો - સ્ટાઇલ ૪",  caption: "મહત્તમ સુરક્ષા અને સૌંદર્યલક્ષી આકર્ષણ માટે પહોળી Z-ગ્રીલ વિન્ડો ઇન્સ્ટોલેશન." },
+  // Door Catalogue (Gurukrupa Sunmica)
+  { id: "sm01", category_id: "sunmica", image_url: "/gallery/Collection of Products/001.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૧",  caption: "ઉચ્ચ ગુણવત્તાવાળા સનમાઈકા સાથે સુંદર દરવાજાની ડિઝાઇન." },
+  { id: "sm02", category_id: "sunmica", image_url: "/gallery/Collection of Products/002.png", title: "દરવાજાની ડિઝાઇન - પેજ ૨",  caption: "આધુનિક ઘરો માટે ભવ્ય સનમાઈકા પેટર્ન." },
+  { id: "sm03", category_id: "sunmica", image_url: "/gallery/Collection of Products/003.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૩",  caption: "વિવિધ પ્રકારની દરવાજાની ફિનિશ અને ટેક્સચર." },
+  { id: "sm04", category_id: "sunmica", image_url: "/gallery/Collection of Products/004.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૪",  caption: "દરેક શૈલી માટે સમકાલીન સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm05", category_id: "sunmica", image_url: "/gallery/Collection of Products/005.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૫",  caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm06", category_id: "sunmica", image_url: "/gallery/Collection of Products/006.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૬",  caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm07", category_id: "sunmica", image_url: "/gallery/Collection of Products/007.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૭",  caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm08", category_id: "sunmica", image_url: "/gallery/Collection of Products/008.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૮",  caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm09", category_id: "sunmica", image_url: "/gallery/Collection of Products/009.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૯",  caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm10", category_id: "sunmica", image_url: "/gallery/Collection of Products/010.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૧૦", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm11", category_id: "sunmica", image_url: "/gallery/Collection of Products/011.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૧૧", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm12", category_id: "sunmica", image_url: "/gallery/Collection of Products/012.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૧૨", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm13", category_id: "sunmica", image_url: "/gallery/Collection of Products/013.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૧૩", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm14", category_id: "sunmica", image_url: "/gallery/Collection of Products/014.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૧૪", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm15", category_id: "sunmica", image_url: "/gallery/Collection of Products/015.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૧૫", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm16", category_id: "sunmica", image_url: "/gallery/Collection of Products/016.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૧૬", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm17", category_id: "sunmica", image_url: "/gallery/Collection of Products/017.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૧૭", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm18", category_id: "sunmica", image_url: "/gallery/Collection of Products/018.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૧૮", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm19", category_id: "sunmica", image_url: "/gallery/Collection of Products/019.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૧૯", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm20", category_id: "sunmica", image_url: "/gallery/Collection of Products/020.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૨૦", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm21", category_id: "sunmica", image_url: "/gallery/Collection of Products/021.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૨૧", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm22", category_id: "sunmica", image_url: "/gallery/Collection of Products/022.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૨૨", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm23", category_id: "sunmica", image_url: "/gallery/Collection of Products/023.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૨૩", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm24", category_id: "sunmica", image_url: "/gallery/Collection of Products/024.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૨૪", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm25", category_id: "sunmica", image_url: "/gallery/Collection of Products/025.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૨૫", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm26", category_id: "sunmica", image_url: "/gallery/Collection of Products/026.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૨૬", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm27", category_id: "sunmica", image_url: "/gallery/Collection of Products/027.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૨૭", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm28", category_id: "sunmica", image_url: "/gallery/Collection of Products/028.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૨૮", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm29", category_id: "sunmica", image_url: "/gallery/Collection of Products/029.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૨૯", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm30", category_id: "sunmica", image_url: "/gallery/Collection of Products/030.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૩૦", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm31", category_id: "sunmica", image_url: "/gallery/Collection of Products/031.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૩૧", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm32", category_id: "sunmica", image_url: "/gallery/Collection of Products/032.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૩૨", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm33", category_id: "sunmica", image_url: "/gallery/Collection of Products/033.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૩૩", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm34", category_id: "sunmica", image_url: "/gallery/Collection of Products/034.jpg", title: "દરવાજાની ડિઝાઇન - પેજ ૩૪", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm35", category_id: "sunmica", image_url: "/gallery/Collection of Products/035.png", title: "દરવાજાની ડિઝાઇન - પેજ ૩૫", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm36", category_id: "sunmica", image_url: "/gallery/Collection of Products/036.png", title: "દરવાજાની ડિઝાઇન - પેજ ૩૬", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm37", category_id: "sunmica", image_url: "/gallery/Collection of Products/037.png", title: "દરવાજાની ડિઝાઇન - પેજ ૩૭", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm38", category_id: "sunmica", image_url: "/gallery/Collection of Products/038.png", title: "દરવાજાની ડિઝાઇન - પેજ ૩૮", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm39", category_id: "sunmica", image_url: "/gallery/Collection of Products/039.png", title: "દરવાજાની ડિઝાઇન - પેજ ૩૯", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm40", category_id: "sunmica", image_url: "/gallery/Collection of Products/040.png", title: "દરવાજાની ડિઝાઇન - પેજ ૪૦", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm41", category_id: "sunmica", image_url: "/gallery/Collection of Products/041.png", title: "દરવાજાની ડિઝાઇન - પેજ ૪૧", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm42", category_id: "sunmica", image_url: "/gallery/Collection of Products/042.jpeg", title: "દરવાજાની ડિઝાઇન - પેજ ૪૨", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm43", category_id: "sunmica", image_url: "/gallery/Collection of Products/043.jpeg", title: "દરવાજાની ડિઝાઇન - પેજ ૪૩", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm44", category_id: "sunmica", image_url: "/gallery/Collection of Products/044.png", title: "દરવાજાની ડિઝાઇન - પેજ ૪૪", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm45", category_id: "sunmica", image_url: "/gallery/Collection of Products/045.png", title: "દરવાજાની ડિઝાઇન - પેજ ૪૫", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm46", category_id: "sunmica", image_url: "/gallery/Collection of Products/046.png", title: "દરવાજાની ડિઝાઇન - પેજ ૪૬", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm47", category_id: "sunmica", image_url: "/gallery/Collection of Products/047.png", title: "દરવાજાની ડિઝાઇન - પેજ ૪૭", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm48", category_id: "sunmica", image_url: "/gallery/Collection of Products/048.png", title: "દરવાજાની ડિઝાઇન - પેજ ૪૮", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+];
+
+type StaticGalleryItem = typeof STATIC_GALLERY_ITEMS[number];
+
 function Gallery({ items, categories }: { items: GalleryItem[]; categories: { id: string; name: string; slug: string }[] }) {
+  // Use static local gallery; fall back to Supabase data if it contains items
+  const useStatic = items.length === 0;
+  const galleryItems = useStatic ? STATIC_GALLERY_ITEMS : items;
+  const galleryCats = useStatic ? STATIC_GALLERY_CATS : categories;
+
   const [active, setActive] = useState<string>("all");
-  const [lightbox, setLightbox] = useState<GalleryItem | null>(null);
-  const filtered = useMemo(
-    () => (active === "all" ? items : items.filter((i) => i.category_id && categories.find((c) => c.id === i.category_id)?.slug === active)),
-    [items, categories, active],
-  );
+  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+  const [lightboxTitle, setLightboxTitle] = useState<string>("");
+
+  const filtered = useMemo(() => {
+    if (active === "all") return galleryItems;
+    if (useStatic) return (galleryItems as StaticGalleryItem[]).filter((i) => i.category_id === active);
+    return (galleryItems as GalleryItem[]).filter((i) => i.category_id && categories.find((c) => c.id === i.category_id)?.slug === active);
+  }, [galleryItems, galleryCats, active, useStatic]);
+
+  const openLightbox = (src: string, title: string) => { setLightboxSrc(src); setLightboxTitle(title); };
+
   return (
     <Section id="gallery" className="marble-bg">
-      <SectionHeading eyebrow="Gallery" title="Recent installations & finishes" />
+      <SectionHeading eyebrow="Gallery" title="Recent installations & finishes" subtitle="Explore our premium aluminium work — doors, windows, glass elevations and partitions." />
       <div className="mb-8 flex flex-wrap justify-center gap-2">
         <FilterChip label="All" active={active === "all"} onClick={() => setActive("all")} />
-        {categories.map((c) => (
+        {galleryCats.map((c) => (
           <FilterChip key={c.id} label={c.name} active={active === c.slug} onClick={() => setActive(c.slug)} />
         ))}
       </div>
-      {filtered.length === 0 ? (
-        <p className="text-center text-sm text-muted-foreground">Gallery images will appear here soon.</p>
-      ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((it) => (
-            <button key={it.id} onClick={() => setLightbox(it)} className="group overflow-hidden rounded-2xl border border-border bg-card shadow-luxe">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {(filtered as Array<StaticGalleryItem | GalleryItem>).map((it) => {
+          const src = useStatic ? (it as StaticGalleryItem).image_url : (it as GalleryItem).image_url;
+          const title = it.title;
+          const caption = useStatic ? (it as StaticGalleryItem).caption : (it as GalleryItem).caption;
+          return (
+            <motion.button
+              key={it.id}
+              onClick={() => openLightbox(src, title)}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              className="group overflow-hidden rounded-2xl border border-border bg-card shadow-luxe text-left"
+            >
               <div className="aspect-[4/3] overflow-hidden">
-                <img src={it.image_url} alt={it.title} loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+                <img src={src} alt={title} loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
               </div>
-              <div className="p-4 text-left">
-                <div className="font-display text-base text-[var(--burgundy)]">{it.title}</div>
-                {it.caption ? <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{it.caption}</p> : null}
+              <div className="p-4">
+                <div className="font-display text-base text-[var(--burgundy)]">{title}</div>
+                {caption ? <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{caption}</p> : null}
               </div>
-            </button>
-          ))}
-        </div>
-      )}
-      {lightbox ? (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 p-4" onClick={() => setLightbox(null)}>
-          <img src={lightbox.image_url} alt={lightbox.title} className="max-h-[90vh] max-w-[90vw] rounded-2xl object-contain" />
+            </motion.button>
+          );
+        })}
+      </div>
+      {lightboxSrc ? (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm"
+          onClick={() => setLightboxSrc(null)}
+        >
+          <div className="relative max-h-[90vh] max-w-[90vw]" onClick={(e) => e.stopPropagation()}>
+            <img src={lightboxSrc} alt={lightboxTitle} className="max-h-[82vh] max-w-[88vw] rounded-2xl object-contain shadow-2xl" />
+            <div className="mt-3 text-center text-white/80 text-sm font-display">{lightboxTitle}</div>
+            <button
+              onClick={() => setLightboxSrc(null)}
+              className="absolute -top-4 -right-4 h-9 w-9 rounded-full bg-white/20 backdrop-blur text-white flex items-center justify-center hover:bg-white/30 transition"
+              aria-label="Close"
+            >✕</button>
+          </div>
         </div>
       ) : null}
     </Section>
@@ -319,9 +441,12 @@ function Reviews({ reviews }: { reviews: { id: string; customer_name: string; ra
 }
 
 function Contact({ settings }: { settings: SiteSettings | null }) {
-  const phone = settings?.phone_primary;
-  const phone2 = settings?.phone_secondary;
-  const wa = (settings?.whatsapp_number || phone || "").replace(/[^\d+]/g, "").replace(/^\+/, "");
+  const phone = settings?.phone_primary || FALLBACK_PHONE_PRIMARY;
+  const phone2 = settings?.phone_secondary || FALLBACK_PHONE_SECONDARY;
+  const phoneClean = phone.replace(/[^\d]/g, "");
+  const wa = settings?.whatsapp_number 
+    ? (settings.whatsapp_number.replace(/[^\d]/g, "").length === 10 ? `91${settings.whatsapp_number.replace(/[^\d]/g, "")}` : settings.whatsapp_number.replace(/[^\d]/g, ""))
+    : (phoneClean.length === 10 ? `91${phoneClean}` : phoneClean);
   const hours = Array.isArray(settings?.working_hours) ? (settings!.working_hours as Array<{ day: string; hours: string }>) : [];
   const mapsUrl = settings?.google_maps_url;
   return (
@@ -329,8 +454,8 @@ function Contact({ settings }: { settings: SiteSettings | null }) {
       <SectionHeading eyebrow="Contact" title="Visit our showroom or reach out" subtitle={settings?.address_line ?? undefined} />
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="grid gap-4">
-          <ContactRow icon={Phone} label="Phone" value={[phone, phone2].filter(Boolean).join(" · ") || "—"} href={phone ? `tel:${phone}` : undefined} />
-          <ContactRow icon={MessageCircle} label="WhatsApp" value={settings?.whatsapp_number ?? phone ?? "—"} href={wa ? `https://wa.me/${wa}` : undefined} />
+          <ContactRow icon={Phone} label="Phone" value={[phone, phone2].filter(Boolean).join(" · ") || "—"} href={phone ? `tel:${phoneClean}` : undefined} className="notranslate" />
+          <ContactRow icon={MessageCircle} label="WhatsApp" value={settings?.whatsapp_number ?? phone ?? "—"} href={wa ? `https://wa.me/${wa}` : undefined} className="notranslate" />
           <ContactRow icon={Mail} label="Email" value={settings?.email ?? "—"} href={settings?.email ? `mailto:${settings.email}` : undefined} />
           <ContactRow icon={MapPin} label="Address" value={settings?.address_line ?? "—"} href={mapsUrl ?? undefined} />
           {hours.length > 0 ? (
@@ -359,17 +484,17 @@ function Contact({ settings }: { settings: SiteSettings | null }) {
   );
 }
 
-function ContactRow({ icon: Icon, label, value, href }: { icon: React.ComponentType<{ className?: string }>; label: string; value: string; href?: string }) {
+function ContactRow({ icon: Icon, label, value, href, className }: { icon: React.ComponentType<{ className?: string }>; label: string; value: string; href?: string; className?: string }) {
   const inner = (
     <div className="flex items-start gap-4 rounded-2xl glass-card p-5">
       <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl burgundy-gradient text-white"><Icon className="h-5 w-5" /></div>
       <div>
         <div className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">{label}</div>
-        <div className="mt-1 font-medium text-foreground">{value}</div>
+        <div className={cn("mt-1 font-medium text-foreground", className)}>{value}</div>
       </div>
     </div>
   );
-  return href ? <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer noopener">{inner}</a> : inner;
+  return href ? <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer noopener" className={className}>{inner}</a> : inner;
 }
 
 function QuoteForm({ settings }: { settings: SiteSettings | null }) {
@@ -377,7 +502,9 @@ function QuoteForm({ settings }: { settings: SiteSettings | null }) {
     name: "", phone_number: "", product_required: "", measurements: "", address: "", message: "",
   });
   const [file, setFile] = useState<File | null>(null);
-  const wa = (settings?.whatsapp_number || settings?.phone_primary || "").replace(/[^\d+]/g, "").replace(/^\+/, "");
+  const waRaw = settings?.whatsapp_number || settings?.phone_primary || "";
+  const waClean = waRaw.replace(/[^\d]/g, "");
+  const wa = waClean.length === 10 ? `91${waClean}` : waClean;
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -483,8 +610,8 @@ function Footer({ settings }: { settings: SiteSettings | null }) {
         <div>
           <h5 className="font-display text-[var(--gold)] mb-3">Contact</h5>
           <ul className="space-y-2 text-sm">
-            {settings?.phone_primary && <li><a className="hover:text-[var(--gold)]" href={`tel:${settings.phone_primary}`}>{settings.phone_primary}</a></li>}
-            {settings?.phone_secondary && <li><a className="hover:text-[var(--gold)]" href={`tel:${settings.phone_secondary}`}>{settings.phone_secondary}</a></li>}
+            <li><a className="hover:text-[var(--gold)] notranslate" href={`tel:${(settings?.phone_primary || FALLBACK_PHONE_PRIMARY).replace(/[^\d]/g, "")}`}>{settings?.phone_primary || FALLBACK_PHONE_PRIMARY}</a></li>
+            <li><a className="hover:text-[var(--gold)] notranslate" href={`tel:${(settings?.phone_secondary || FALLBACK_PHONE_SECONDARY).replace(/[^\d]/g, "")}`}>{settings?.phone_secondary || FALLBACK_PHONE_SECONDARY}</a></li>
             {settings?.email && <li><a className="hover:text-[var(--gold)]" href={`mailto:${settings.email}`}>{settings.email}</a></li>}
             {settings?.address_line && <li className="text-white/70">{settings.address_line}</li>}
           </ul>
@@ -530,7 +657,15 @@ function HomePage() {
     }).then(() => {});
   }, []);
 
-  const settings = settingsQ.data ?? null;
+  const settings = useMemo(() => {
+    const raw = settingsQ.data || {};
+    return {
+      ...raw,
+      phone_primary: "74054 02423",
+      phone_secondary: "84878 28136",
+      whatsapp_number: "74054 02423",
+    } as SiteSettings;
+  }, [settingsQ.data]);
   const activeServices = (servicesQ.data ?? []).filter((s) => s.is_active);
   const activeCats = (catsQ.data ?? []).filter((c) => c.is_active);
   const activeItems = (itemsQ.data ?? []).filter((i) => i.is_active);
