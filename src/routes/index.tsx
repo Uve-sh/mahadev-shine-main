@@ -227,7 +227,7 @@ const STATIC_GALLERY_CATS = [
 ];
 
 const STATIC_GALLERY_ITEMS = [
-  // Door Catalogue — NEW photos FIRST (001–015), then classic catalogue (016–049)
+  // Door Catalogue — NEW photos FIRST (001–022), then classic catalogue (023–056)
   { id: "sm01", category_id: "sunmica", image_url: "/gallery/Collection of Products/001.png", title: "🆕 નવી ડિઝાઇન - ૧", caption: "નવીનતમ સનમાઈકા દરવાજાની ડિઝાઇન — ૨૦૨૬ કલેક્શન.", isNew: true },
   { id: "sm02", category_id: "sunmica", image_url: "/gallery/Collection of Products/002.png", title: "🆕 નવી ડિઝાઇન - ૨", caption: "નવીનતમ સનમાઈકા દરવાજાની ડિઝાઇન — ૨૦૨૬ કલેક્શન.", isNew: true },
   { id: "sm03", category_id: "sunmica", image_url: "/gallery/Collection of Products/003.png", title: "🆕 નવી ડિઝાઇન - ૩", caption: "નવીનતમ સનમાઈકા દરવાજાની ડિઝાઇન — ૨૦૨૬ કલેક્શન.", isNew: true },
@@ -243,23 +243,23 @@ const STATIC_GALLERY_ITEMS = [
   { id: "sm13", category_id: "sunmica", image_url: "/gallery/Collection of Products/013.png", title: "🆕 નવી ડિઝાઇન - ૧૩", caption: "નવીનતમ સનમાઈકા દરવાજાની ડિઝાઇન — ૨૦૨૬ કલેક્શન.", isNew: true },
   { id: "sm14", category_id: "sunmica", image_url: "/gallery/Collection of Products/014.png", title: "🆕 નવી ડિઝાઇન - ૧૪", caption: "નવીનતમ સનમાઈકા દરવાજાની ડિઝાઇન — ૨૦૨૬ કલેક્શન.", isNew: true },
   { id: "sm15", category_id: "sunmica", image_url: "/gallery/Collection of Products/015.png", title: "🆕 નવી ડિઝાઇન - ૧૫", caption: "નવીનતમ સનમાઈકા દરવાજાની ડિઝાઇન — ૨૦૨૬ કલેક્શન.", isNew: true },
-  // Classic Catalogue (016–049)
-  { id: "sm16", category_id: "sunmica", image_url: "/gallery/Collection of Products/016.jpg", title: "દરવાજાની ડિઝાઇન - ૧૬",  caption: "ઉચ્ચ ગુણવત્તાવાળા સનમાઈકા સાથે સુંદર દરવાજાની ડિઝાઇન." },
-  { id: "sm17", category_id: "sunmica", image_url: "/gallery/Collection of Products/017.png", title: "દરવાજાની ડિઝાઇન - ૧૭",  caption: "આધુનિક ઘરો માટે ભવ્ય સનમાઈકા પેટર્ન." },
-  { id: "sm18", category_id: "sunmica", image_url: "/gallery/Collection of Products/018.jpg", title: "દરવાજાની ડિઝાઇન - ૧૮",  caption: "વિવિધ પ્રકારની દરવાજાની ફિનિશ અને ટેક્સચર." },
-  { id: "sm19", category_id: "sunmica", image_url: "/gallery/Collection of Products/019.jpg", title: "દરવાજાની ડિઝાઇન - ૧૯",  caption: "દરેક શૈલી માટે સમકાલીન સનમાઈકા દરવાજાની ડિઝાઇન." },
-  { id: "sm20", category_id: "sunmica", image_url: "/gallery/Collection of Products/020.jpg", title: "દરવાજાની ડિઝાઇન - ૨૦",  caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
-  { id: "sm21", category_id: "sunmica", image_url: "/gallery/Collection of Products/021.jpg", title: "દરવાજાની ડિઝાઇન - ૨૧",  caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
-  { id: "sm22", category_id: "sunmica", image_url: "/gallery/Collection of Products/022.jpg", title: "દરવાજાની ડિઝાઇન - ૨૨",  caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
-  { id: "sm23", category_id: "sunmica", image_url: "/gallery/Collection of Products/023.jpg", title: "દરવાજાની ડિઝાઇન - ૨૩",  caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
-  { id: "sm24", category_id: "sunmica", image_url: "/gallery/Collection of Products/024.jpg", title: "દરવાજાની ડિઝાઇન - ૨૪",  caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
-  { id: "sm25", category_id: "sunmica", image_url: "/gallery/Collection of Products/025.jpg", title: "દરવાજાની ડિઝાઇન - ૨૫", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
-  { id: "sm26", category_id: "sunmica", image_url: "/gallery/Collection of Products/026.jpg", title: "દરવાજાની ડિઝાઇન - ૨૬", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
-  { id: "sm27", category_id: "sunmica", image_url: "/gallery/Collection of Products/027.jpg", title: "દરવાજાની ડિઝાઇન - ૨૭", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
-  { id: "sm28", category_id: "sunmica", image_url: "/gallery/Collection of Products/028.jpg", title: "દરવાજાની ડિઝાઇન - ૨૮", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
-  { id: "sm29", category_id: "sunmica", image_url: "/gallery/Collection of Products/029.jpg", title: "દરવાજાની ડિઝાઇન - ૨૯", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
-  { id: "sm30", category_id: "sunmica", image_url: "/gallery/Collection of Products/030.jpg", title: "દરવાજાની ડિઝાઇન - ૩૦", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
-  { id: "sm31", category_id: "sunmica", image_url: "/gallery/Collection of Products/031.jpg", title: "દરવાજાની ડિઝાઇન - ૩૧", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm16", category_id: "sunmica", image_url: "/gallery/Collection of Products/016.png", title: "🆕 નવી ડિઝાઇન - ૧૬", caption: "નવીનતમ સનમાઈકા દરવાજાની ડિઝાઇન — ૨૦૨૬ કલેક્શન.", isNew: true },
+  { id: "sm17", category_id: "sunmica", image_url: "/gallery/Collection of Products/017.png", title: "🆕 નવી ડિઝાઇન - ૧૭", caption: "નવીનતમ સનમાઈકા દરવાજાની ડિઝાઇન — ૨૦૨૬ કલેક્શન.", isNew: true },
+  { id: "sm18", category_id: "sunmica", image_url: "/gallery/Collection of Products/018.png", title: "🆕 નવી ડિઝાઇન - ૧૮", caption: "નવીનતમ સનમાઈકા દરવાજાની ડિઝાઇન — ૨૦૨૬ કલેક્શન.", isNew: true },
+  { id: "sm19", category_id: "sunmica", image_url: "/gallery/Collection of Products/019.png", title: "🆕 નવી ડિઝાઇન - ૧૯", caption: "નવીનતમ સનમાઈકા દરવાજાની ડિઝાઇન — ૨૦૨૬ કલેક્શન.", isNew: true },
+  { id: "sm20", category_id: "sunmica", image_url: "/gallery/Collection of Products/020.png", title: "🆕 નવી ડિઝાઇન - ૨૦", caption: "નવીનતમ સનમાઈકા દરવાજાની ડિઝાઇન — ૨૦૨૬ કલેક્શન.", isNew: true },
+  { id: "sm21", category_id: "sunmica", image_url: "/gallery/Collection of Products/021.png", title: "🆕 નવી ડિઝાઇન - ૨૧", caption: "નવીનતમ સનમાઈકા દરવાજાની ડિઝાઇન — ૨૦૨૬ કલેક્શન.", isNew: true },
+  { id: "sm22", category_id: "sunmica", image_url: "/gallery/Collection of Products/022.png", title: "🆕 નવી ડિઝાઇન - ૨૨", caption: "નવીનતમ સનમાઈકા દરવાજાની ડિઝાઇન — ૨૦૨૬ કલેક્શન.", isNew: true },
+  // Classic Catalogue (023–056)
+  { id: "sm23", category_id: "sunmica", image_url: "/gallery/Collection of Products/023.jpg", title: "દરવાજાની ડિઝાઇન - ૨૩",  caption: "ઉચ્ચ ગુણવત્તાવાળા સનમાઈકા સાથે સુંદર દરવાજાની ડિઝાઇન." },
+  { id: "sm24", category_id: "sunmica", image_url: "/gallery/Collection of Products/024.png", title: "દરવાજાની ડિઝાઇન - ૨૪",  caption: "આધુનિક ઘરો માટે ભવ્ય સનમાઈકા પેટર્ન." },
+  { id: "sm25", category_id: "sunmica", image_url: "/gallery/Collection of Products/025.jpg", title: "દરવાજાની ડિઝાઇન - ૨૫",  caption: "વિવિધ પ્રકારની દરવાજાની ફિનિશ અને ટેક્સચર." },
+  { id: "sm26", category_id: "sunmica", image_url: "/gallery/Collection of Products/026.jpg", title: "દરવાજાની ડિઝાઇન - ૨૬",  caption: "દરેક શૈલી માટે સમકાલીન સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm27", category_id: "sunmica", image_url: "/gallery/Collection of Products/027.jpg", title: "દરવાજાની ડિઝાઇન - ૨૭",  caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm28", category_id: "sunmica", image_url: "/gallery/Collection of Products/028.jpg", title: "દરવાજાની ડિઝાઇન - ૨૮",  caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm29", category_id: "sunmica", image_url: "/gallery/Collection of Products/029.jpg", title: "દરવાજાની ડિઝાઇન - ૨૯",  caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm30", category_id: "sunmica", image_url: "/gallery/Collection of Products/030.jpg", title: "દરવાજાની ડિઝાઇન - ૩૦",  caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm31", category_id: "sunmica", image_url: "/gallery/Collection of Products/031.jpg", title: "દરવાજાની ડિઝાઇન - ૩૧",  caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
   { id: "sm32", category_id: "sunmica", image_url: "/gallery/Collection of Products/032.jpg", title: "દરવાજાની ડિઝાઇન - ૩૨", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
   { id: "sm33", category_id: "sunmica", image_url: "/gallery/Collection of Products/033.jpg", title: "દરવાજાની ડિઝાઇન - ૩૩", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
   { id: "sm34", category_id: "sunmica", image_url: "/gallery/Collection of Products/034.jpg", title: "દરવાજાની ડિઝાઇન - ૩૪", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
@@ -278,6 +278,13 @@ const STATIC_GALLERY_ITEMS = [
   { id: "sm47", category_id: "sunmica", image_url: "/gallery/Collection of Products/047.jpg", title: "દરવાજાની ડિઝાઇન - ૪૭", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
   { id: "sm48", category_id: "sunmica", image_url: "/gallery/Collection of Products/048.jpg", title: "દરવાજાની ડિઝાઇન - ૪૮", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
   { id: "sm49", category_id: "sunmica", image_url: "/gallery/Collection of Products/049.jpg", title: "દરવાજાની ડિઝાઇન - ૪૯", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm50", category_id: "sunmica", image_url: "/gallery/Collection of Products/050.jpg", title: "દરવાજાની ડિઝાઇન - ૫૦", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm51", category_id: "sunmica", image_url: "/gallery/Collection of Products/051.jpg", title: "દરવાજાની ડિઝાઇન - ૫૧", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm52", category_id: "sunmica", image_url: "/gallery/Collection of Products/052.jpg", title: "દરવાજાની ડિઝાઇન - ૫૨", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm53", category_id: "sunmica", image_url: "/gallery/Collection of Products/053.jpg", title: "દરવાજાની ડિઝાઇન - ૫૩", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm54", category_id: "sunmica", image_url: "/gallery/Collection of Products/054.jpg", title: "દરવાજાની ડિઝાઇન - ૫૪", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm55", category_id: "sunmica", image_url: "/gallery/Collection of Products/055.jpg", title: "દરવાજાની ડિઝાઇન - ૫૫", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
+  { id: "sm56", category_id: "sunmica", image_url: "/gallery/Collection of Products/056.jpg", title: "દરવાજાની ડિઝાઇન - ૫૬", caption: "આધુનિક સનમાઈકા દરવાજાની ડિઝાઇન." },
 ];
 
 type StaticGalleryItem = typeof STATIC_GALLERY_ITEMS[number];
